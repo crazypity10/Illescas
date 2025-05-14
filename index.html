@@ -20,6 +20,12 @@
             box-sizing: border-box;
         }
         
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            position: relative;
+        }
+        
         body {
             font-family: var(--font-main);
             line-height: 1.6;
@@ -70,7 +76,7 @@
         
         .hero {
             height: 500px;
-            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/api/placeholder/1200/500');
+            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/img/01.png');
             background-size: cover;
             background-position: center;
             display: flex;
@@ -326,6 +332,30 @@
             background-color: #20BA5B;
         }
         
+        .mobile-menu-icon {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: white;
+        }
+        
+        .iframe-container {
+            position: relative;
+            overflow: hidden;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            width: 100%;
+        }
+        
+        .iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            border-radius: 8px;
+        }
+        
         @media (max-width: 768px) {
             .about-content {
                 flex-direction: column;
@@ -348,6 +378,39 @@
             .hero-content h1 {
                 font-size: 36px;
             }
+            
+            /* Ajustamos el botón de WhatsApp para dispositivos móviles */
+            .whatsapp-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 28px;
+                bottom: 15px;
+                right: 15px;
+            }
+            
+            /* Ajustes para el menú de navegación */
+            .nav-links {
+                display: none; /* Ocultamos el menú en móviles por ahora */
+            }
+            
+            .mobile-menu-icon {
+                display: block;
+            }
+        }
+        
+        /* Añadimos breakpoint adicional para pantallas muy pequeñas */
+        @media (max-width: 480px) {
+            .whatsapp-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 24px;
+                bottom: 10px;
+                right: 10px;
+            }
+            
+            .hero-content h1 {
+                font-size: 28px;
+            }
         }
     </style>
 </head>
@@ -363,6 +426,9 @@
                     <li><a href="#proyectos">Proyectos</a></li>
                     <li><a href="#contacto">Contacto</a></li>
                 </ul>
+                <div class="mobile-menu-icon">
+                    <i class="fas fa-bars"></i>
+                </div>
             </nav>
         </div>
     </header>
@@ -512,8 +578,8 @@
                     <p><strong>WhatsApp:</strong> +54 2284 58-6475</p>
                     <p><strong>Email:</strong> contacto@illescasconstrucciones.com</p>
                     <p><strong>Horario de atención:</strong> Lunes a Viernes de 8:00 a 18:00</p>
-                    <div class="map">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d50895.90446760031!2d-60.36589485551258!3d-36.89431139349949!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x959658a5c7259405%3A0x487549daa6bc3cb!2sOlavarr%C3%ADa%2C%20Provincia%20de%20Buenos%20Aires!5e0!3m2!1ses!2sar!4v1715610835456!5m2!1ses!2sar" width="100%" height="300" style="border:0; border-radius:8px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    <div class="map iframe-container">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d50895.90446760031!2d-60.36589485551258!3d-36.89431139349949!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x959658a5c7259405%3A0x487549daa6bc3cb!2sOlavarr%C3%ADa%2C%20Provincia%20de%20Buenos%20Aires!5e0!3m2!1ses!2sar!4v1715610835456!5m2!1ses!2sar" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                 </div>
                 <div class="contact-form">
@@ -553,5 +619,28 @@
     <a href="https://wa.me/542284586475" class="whatsapp-btn" target="_blank">
         <i class="fab fa-whatsapp"></i>
     </a>
+
+    <!-- Scripts -->
+    <script>
+        // Prevenir desplazamiento horizontal
+        document.addEventListener('DOMContentLoaded', function() {
+            // Script para menú móvil
+            const mobileMenuIcon = document.querySelector('.mobile-menu-icon');
+            const navLinks = document.querySelector('.nav-links');
+            
+            if(mobileMenuIcon) {
+                mobileMenuIcon.addEventListener('click', function() {
+                    navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+                });
+            }
+            
+            // Prevenir desplazamiento horizontal en todos los elementos
+            document.querySelectorAll('*').forEach(function(element) {
+                if (element.scrollWidth > window.innerWidth) {
+                    console.log('Elemento causando desbordamiento:', element);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
