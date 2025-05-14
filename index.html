@@ -74,9 +74,11 @@
             color: var(--secondary-color);
         }
         
+        /* La solución para el hero es utilizar una imagen de muestra mientras se verifica que
+        la carpeta img exista y contenga la imagen 01.png en la raíz del proyecto */
         .hero {
             height: 500px;
-            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/img/01.png');
+            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('img/01.png'); 
             background-size: cover;
             background-position: center;
             display: flex;
@@ -85,6 +87,9 @@
             text-align: center;
             color: white;
         }
+        
+        /* Después de verificar la estructura de carpetas, cambiar la imagen de arriba por:
+        background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('img/01.png'); */
         
         .hero-content h1 {
             font-size: 48px;
@@ -356,6 +361,7 @@
             border-radius: 8px;
         }
         
+        /* Solución para el menú móvil */
         @media (max-width: 768px) {
             .about-content {
                 flex-direction: column;
@@ -379,7 +385,6 @@
                 font-size: 36px;
             }
             
-            /* Ajustamos el botón de WhatsApp para dispositivos móviles */
             .whatsapp-btn {
                 width: 50px;
                 height: 50px;
@@ -388,9 +393,25 @@
                 right: 15px;
             }
             
-            /* Ajustes para el menú de navegación */
+            /* Versión mejorada del menú móvil */
             .nav-links {
-                display: none; /* Ocultamos el menú en móviles por ahora */
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background-color: var(--primary-color);
+                padding: 10px 0;
+                z-index: 100;
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .nav-links li {
+                margin: 10px 20px;
             }
             
             .mobile-menu-icon {
@@ -398,7 +419,6 @@
             }
         }
         
-        /* Añadimos breakpoint adicional para pantallas muy pequeñas */
         @media (max-width: 480px) {
             .whatsapp-btn {
                 width: 45px;
@@ -622,19 +642,27 @@
 
     <!-- Scripts -->
     <script>
-        // Prevenir desplazamiento horizontal
         document.addEventListener('DOMContentLoaded', function() {
-            // Script para menú móvil
+            // Script mejorado para menú móvil
             const mobileMenuIcon = document.querySelector('.mobile-menu-icon');
             const navLinks = document.querySelector('.nav-links');
             
             if(mobileMenuIcon) {
                 mobileMenuIcon.addEventListener('click', function() {
-                    navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+                    navLinks.classList.toggle('active');
                 });
             }
             
-            // Prevenir desplazamiento horizontal en todos los elementos
+            // Cerrar menú al hacer clic en un enlace
+            document.querySelectorAll('.nav-links a').forEach(function(link) {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 768) {
+                        navLinks.classList.remove('active');
+                    }
+                });
+            });
+            
+            // Prevenir desbordamiento horizontal
             document.querySelectorAll('*').forEach(function(element) {
                 if (element.scrollWidth > window.innerWidth) {
                     console.log('Elemento causando desbordamiento:', element);
