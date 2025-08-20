@@ -23,7 +23,7 @@
         .nav-links li { margin-left: 20px; }
         .nav-links a { color: white; text-decoration: none; transition: color 0.3s; }
         .nav-links a:hover { color: var(--secondary-color); }
-        .hero { height: 500px; background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('img/hero.jpg'); background-size: cover; background-position: center; display: flex; justify-content: center; align-items: center; text-align: center; color: white; flex-direction: column; }
+        .hero { height: 500px; background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('img/hero.jpg'); background-size: cover; background-position: center; display: flex; justify-content: center; align-items: center; text-align: center; color: white; flex-direction: column; }
         .hero-content h1 { font-size: 48px; margin-bottom: 20px; }
         .hero-content p { font-size: 18px; margin-bottom: 30px; }
         .btn { display: inline-block; background-color: var(--secondary-color); color: white; padding: 12px 24px; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; font-size: 16px; font-weight: bold; transition: background-color 0.3s; margin: 5px; }
@@ -54,6 +54,14 @@
         .section-title { text-align: center; margin-bottom: 50px; }
         .section-title h2 { font-size: 36px; color: var(--primary-color); margin-bottom: 10px; }
         .section-title p { color: #666; }
+        
+        .about-content { display: flex; align-items: center; gap: 40px; }
+        .about-text { flex: 1; }
+        .about-text h3 { color: var(--primary-color); margin-bottom: 20px; font-size: 24px; }
+        .about-text p { margin-bottom: 15px; text-align: justify; }
+        .about-image { flex: 1; }
+        .about-image img { width: 100%; height: 300px; object-fit: cover; border-radius: 8px; }
+        
         .services { background-color: var(--light-color); }
         .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
         .service-card { background-color: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: transform 0.3s; }
@@ -71,10 +79,11 @@
         .portfolio-item:hover .portfolio-overlay { opacity: 1; }
         .portfolio-overlay h3 { color: white; font-size: 24px; }
         .contact { background-color: var(--light-color); }
-        .contact-content { display: flex; justify-content: space-between; }
-        .contact-info { flex: 1; padding-right: 30px; }
+        .contact-content { display: flex; justify-content: space-between; gap: 40px; }
+        .contact-info { flex: 1; }
         .contact-info h3 { margin-bottom: 20px; color: var(--primary-color); }
         .contact-info p { margin-bottom: 15px; }
+        .contact-info i { margin-right: 10px; color: var(--secondary-color); }
         .contact-form { flex: 1; }
         .form-group { margin-bottom: 20px; }
         .form-control { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; }
@@ -82,9 +91,10 @@
         footer { background-color: var(--dark-color); color: white; padding: 30px 0; text-align: center; }
         .social-links { margin-top: 20px; }
         .social-links a { color: white; margin: 0 10px; font-size: 20px; }
-        .whatsapp-btn { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background-color: #25D366; color: white; border-radius: 50%; text-align: center; font-size: 36px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center; z-index: 1000; transition: all 0.3s; }
+        .whatsapp-btn { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background-color: #25D366; color: white; border-radius: 50%; text-align: center; font-size: 36px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center; z-index: 1000; transition: all 0.3s; text-decoration: none; }
         .whatsapp-btn:hover { transform: scale(1.1); background-color: #20BA5B; }
         .mobile-menu-icon { display: none; font-size: 24px; cursor: pointer; color: white; }
+        
         @media (max-width: 768px) {
             .about-content { flex-direction: column; }
             .about-text { padding-right: 0; margin-bottom: 30px; }
@@ -141,7 +151,9 @@
             <div class="about-content">
                 <div class="about-text">
                     <h3>Tradición familiar en construcción</h3>
-                    <p>Somos una empresa familiar dedicada a la construcción con años de experiencia en Olavarría y alrededores...</p>
+                    <p>Somos una empresa familiar dedicada a la construcción con años de experiencia en Olavarría y alrededores. Nuestro compromiso es brindar servicios de construcción de la más alta calidad, utilizando materiales premium y técnicas modernas de construcción.</p>
+                    <p>Nos especializamos en construcciones residenciales, comerciales y reformas integrales, siempre manteniendo los más altos estándares de calidad y cumpliendo con todos los plazos acordados con nuestros clientes.</p>
+                    <p>La confianza de nuestros clientes es nuestro mayor patrimonio, y trabajamos día a día para mantener esa reputación que nos ha caracterizado a lo largo de los años en la región.</p>
                 </div>
                 <div class="about-image">
                     <img src="img/equipo.jpg" alt="Equipo de trabajo">
@@ -158,7 +170,65 @@
                 <p>Soluciones integrales para tus proyectos</p>
             </div>
             <div class="services-grid">
-                <!-- tarjetas de servicios como ya las tenías -->
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="img/servicios/construccion-residencial.jpg" alt="Construcción Residencial">
+                    </div>
+                    <div class="service-content">
+                        <h3>Construcción Residencial</h3>
+                        <p>Construcción de casas y viviendas familiares con los más altos estándares de calidad. Desde la planificación hasta la entrega final.</p>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="img/servicios/reformas.jpg" alt="Reformas">
+                    </div>
+                    <div class="service-content">
+                        <h3>Reformas Integrales</h3>
+                        <p>Renovación completa de espacios existentes. Transformamos tu hogar con diseños modernos y funcionales.</p>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="img/servicios/obras-comerciales.jpg" alt="Obras Comerciales">
+                    </div>
+                    <div class="service-content">
+                        <h3>Obras Comerciales</h3>
+                        <p>Construcción y acondicionamiento de espacios comerciales, oficinas y locales comerciales adaptados a tus necesidades.</p>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="img/servicios/albanileria.jpg" alt="Albañilería">
+                    </div>
+                    <div class="service-content">
+                        <h3>Albañilería</h3>
+                        <p>Servicios especializados de albañilería, mampostería, revoques y terminaciones de alta calidad.</p>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="img/servicios/pintura.jpg" alt="Pintura">
+                    </div>
+                    <div class="service-content">
+                        <h3>Pintura y Acabados</h3>
+                        <p>Trabajos de pintura interior y exterior, tratamientos especiales y acabados decorativos profesionales.</p>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="img/servicios/mantenimiento.jpg" alt="Mantenimiento">
+                    </div>
+                    <div class="service-content">
+                        <h3>Mantenimiento</h3>
+                        <p>Servicios de mantenimiento preventivo y correctivo para conservar tu propiedad en perfectas condiciones.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -171,7 +241,47 @@
                 <p>Conoce algunos de nuestros trabajos</p>
             </div>
             <div class="portfolio-grid">
-                <!-- items de proyectos como ya los tenías -->
+                <div class="portfolio-item">
+                    <img src="img/proyectos/proyecto1.jpg" alt="Casa Familiar">
+                    <div class="portfolio-overlay">
+                        <h3>Casa Familiar</h3>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item">
+                    <img src="img/proyectos/proyecto2.jpg" alt="Reforma Integral">
+                    <div class="portfolio-overlay">
+                        <h3>Reforma Integral</h3>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item">
+                    <img src="img/proyectos/proyecto3.jpg" alt="Local Comercial">
+                    <div class="portfolio-overlay">
+                        <h3>Local Comercial</h3>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item">
+                    <img src="img/proyectos/proyecto4.jpg" alt="Construcción Moderna">
+                    <div class="portfolio-overlay">
+                        <h3>Construcción Moderna</h3>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item">
+                    <img src="img/proyectos/proyecto5.jpg" alt="Ampliación">
+                    <div class="portfolio-overlay">
+                        <h3>Ampliación</h3>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item">
+                    <img src="img/proyectos/proyecto6.jpg" alt="Remodelación">
+                    <div class="portfolio-overlay">
+                        <h3>Remodelación</h3>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -184,7 +294,51 @@
                 <p>¿Tienes un proyecto en mente? Contáctanos</p>
             </div>
             <div class="contact-content">
-                <!-- información y formulario como ya los tenías -->
+                <div class="contact-info">
+                    <h3>Información de Contacto</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Olavarría, Buenos Aires, Argentina</p>
+                    <p><i class="fas fa-phone"></i> +54 2284 58-6475</p>
+                    <p><i class="fas fa-envelope"></i> info@illescasconstrucciones.com</p>
+                    <p><i class="fas fa-clock"></i> Lunes a Viernes: 8:00 - 18:00</p>
+                    <p><i class="fas fa-clock"></i> Sábados: 8:00 - 13:00</p>
+                    
+                    <h3 style="margin-top: 30px;">Síguenos</h3>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <form action="#" method="post">
+                        <div class="form-group">
+                            <input type="text" name="nombre" class="form-control" placeholder="Tu nombre completo" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" name="email" class="form-control" placeholder="Tu correo electrónico" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" name="telefono" class="form-control" placeholder="Tu número de teléfono" required>
+                        </div>
+                        <div class="form-group">
+                            <select name="servicio" class="form-control" required>
+                                <option value="">Selecciona un servicio</option>
+                                <option value="construccion">Construcción Residencial</option>
+                                <option value="reforma">Reformas Integrales</option>
+                                <option value="comercial">Obras Comerciales</option>
+                                <option value="albanileria">Albañilería</option>
+                                <option value="pintura">Pintura y Acabados</option>
+                                <option value="mantenimiento">Mantenimiento</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <textarea name="mensaje" class="form-control" placeholder="Cuéntanos sobre tu proyecto..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn" style="width: 100%;">Enviar Mensaje</button>
+                    </form>
+                </div>
             </div>
         </div>
     </section>
@@ -196,20 +350,26 @@
         </div>
     </footer>
 
-    <a href="https://wa.me/542284586475" class="whatsapp-btn" target="_blank"><i class="fab fa-whatsapp"></i></a>
+    <a href="https://wa.me/542284586475" class="whatsapp-btn" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const mobileMenuIcon = document.querySelector('.mobile-menu-icon');
             const navLinks = document.querySelector('.nav-links');
+            
             if(mobileMenuIcon) {
                 mobileMenuIcon.addEventListener('click', function() {
                     navLinks.classList.toggle('active');
                 });
             }
+            
             document.querySelectorAll('.nav-links a').forEach(function(link) {
                 link.addEventListener('click', function() {
-                    if (window.innerWidth <= 768) { navLinks.classList.remove('active'); }
+                    if (window.innerWidth <= 768) { 
+                        navLinks.classList.remove('active'); 
+                    }
                 });
             });
         });
