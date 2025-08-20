@@ -8,14 +8,20 @@
   <style>
     body { font-family: Arial, sans-serif; background:#f4f4f4; margin:0; padding:0; }
     header { background:#2c3e50; color:#fff; padding:15px; text-align:center; }
-    .container { max-width:800px; margin:auto; padding:20px; }
+    .container { max-width:900px; margin:auto; padding:20px; }
     h1 { color:#2c3e50; text-align:center; }
-    .calculadora { background:#fff; padding:20px; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
+    .calculadora, .carrito { background:#fff; padding:20px; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.1); margin-bottom:20px; }
     label { font-weight:bold; display:block; margin-top:10px; }
     select, input { width:100%; padding:10px; margin-top:5px; border:1px solid #ccc; border-radius:5px; }
     button { margin-top:15px; width:100%; background:#e67e22; border:none; color:#fff; padding:12px; font-size:16px; border-radius:5px; cursor:pointer; }
     button:hover { background:#d35400; }
     .resultado { margin-top:20px; font-weight:bold; text-align:center; font-size:18px; }
+    .carrito h2 { margin-bottom:10px; }
+    table { width:100%; border-collapse:collapse; margin-top:10px; }
+    th, td { border:1px solid #ccc; padding:10px; text-align:center; }
+    th { background:#2c3e50; color:white; }
+    .btn-eliminar { background:#dc3545; color:white; border:none; padding:6px 12px; border-radius:5px; cursor:pointer; }
+    .btn-eliminar:hover { background:#b52a37; }
     .whatsapp { display:none; margin-top:20px; background:#25D366; color:#fff; text-align:center; padding:12px; border-radius:5px; font-weight:bold; text-decoration:none; }
     .whatsapp:hover { background:#20ba5b; }
   </style>
@@ -27,6 +33,8 @@
   </header>
 
   <div class="container">
+
+    <!-- CALCULADORA -->
     <div class="calculadora">
       <label for="trabajo">Tipo de trabajo:</label>
       <select id="trabajo">
@@ -56,56 +64,103 @@
       <label for="cantidad">Cantidad (m², ml o unidades):</label>
       <input type="number" id="cantidad" placeholder="Ingrese cantidad" min="1">
 
-      <button onclick="calcular()">Calcular</button>
+      <button onclick="agregarAlCarrito()">Agregar al Presupuesto</button>
+    </div>
 
-      <div class="resultado" id="resultado"></div>
-      <a id="btnWhatsapp" href="#" target="_blank" class="whatsapp">Enviar por WhatsApp</a>
+    <!-- CARRITO -->
+    <div class="carrito">
+      <h2>Tu Presupuesto</h2>
+      <table id="tablaCarrito">
+        <thead>
+          <tr>
+            <th>Trabajo</th>
+            <th>Cantidad</th>
+            <th>Precio unitario</th>
+            <th>Subtotal</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div class="resultado" id="total">Total: $0</div>
+      <a id="btnWhatsapp" href="#" target="_blank" class="whatsapp">Enviar Presupuesto por WhatsApp</a>
     </div>
   </div>
 
   <script>
-    function calcular() {
+    const precios = {
+      zapata: { desc: "Zapatas", precio: 120000 },
+      encadenado: { desc: "Encadenado lineal", precio: 25000 },
+      columna: { desc: "Columna", precio: 25000 },
+      viga: { desc: "Viga sup. armada", precio: 25000 },
+      losa_vigueta: { desc: "Losa viguetas", precio: 50000 },
+      capa_aisladora: { desc: "Capa aisladora", precio: 20000 },
+      losa_hormigon: { desc: "Losa de hormigón", precio: 80000 },
+      techo_chapa: { desc: "Techo chapa c/ machimbre", precio: 50000 },
+      pared_comun: { desc: "Pared ladrillo común", precio: 25000 },
+      ladrillo12: { desc: "Pared ladrillo del 12", precio: 20000 },
+      ladrillo8: { desc: "Pared ladrillo del 8", precio: 12000 },
+      revoque_int: { desc: "Revoque interior", precio: 20000 },
+      revoque_ext: { desc: "Revoque exterior", precio: 30000 },
+      coloc_puerta: { desc: "Colocación de puerta", precio: 120000 },
+      puerta_placa: { desc: "Puerta de placa", precio: 75000 },
+      ventana_std: { desc: "Ventana estándar", precio: 60000 },
+      ventana_grande: { desc: "Ventana 1.80x2.00", precio: 150000 },
+      pintura: { desc: "Pintura látex", precio: 10000 },
+      enduido: { desc: "Enduido", precio: 8000 },
+      membrana_rollo: { desc: "Membrana por rollo", precio: 40000 },
+      membrana_liquida: { desc: "Membrana líquida/pasta", precio: 12000 },
+    };
+
+    let carrito = [];
+
+    function agregarAlCarrito() {
       let trabajo = document.getElementById("trabajo").value;
       let cantidad = parseFloat(document.getElementById("cantidad").value);
-      let precio = 0, descripcion = "";
 
       if (isNaN(cantidad) || cantidad <= 0) {
-        document.getElementById("resultado").innerHTML = "Ingrese una cantidad válida.";
-        document.getElementById("btnWhatsapp").style.display = "none";
+        alert("Ingrese una cantidad válida.");
         return;
       }
 
-      switch (trabajo) {
-        case "zapata": precio = 120000; descripcion = "Zapatas"; break;
-        case "encadenado": precio = 25000; descripcion = "Encadenado lineal"; break;
-        case "columna": precio = 25000; descripcion = "Columna"; break;
-        case "viga": precio = 25000; descripcion = "Viga sup. armada"; break;
-        case "losa_vigueta": precio = 50000; descripcion = "Losa viguetas"; break;
-        case "capa_aisladora": precio = 20000; descripcion = "Capa aisladora"; break;
-        case "losa_hormigon": precio = 80000; descripcion = "Losa de hormigón"; break;
-        case "techo_chapa": precio = 50000; descripcion = "Techo chapa c/ machimbre"; break;
-        case "pared_comun": precio = 25000; descripcion = "Pared ladrillo común"; break;
-        case "ladrillo12": precio = 20000; descripcion = "Pared ladrillo del 12"; break;
-        case "ladrillo8": precio = 12000; descripcion = "Pared ladrillo del 8"; break;
-        case "revoque_int": precio = 20000; descripcion = "Revoque interior"; break;
-        case "revoque_ext": precio = 30000; descripcion = "Revoque exterior"; break;
-        case "coloc_puerta": precio = 120000; descripcion = "Colocación de puerta"; break;
-        case "puerta_placa": precio = 75000; descripcion = "Puerta de placa"; break;
-        case "ventana_std": precio = 60000; descripcion = "Ventana estándar"; break;
-        case "ventana_grande": precio = 150000; descripcion = "Ventana 1.80x2.00"; break;
-        case "pintura": precio = 10000; descripcion = "Pintura látex"; break;
-        case "enduido": precio = 8000; descripcion = "Enduido"; break;
-        case "membrana_rollo": precio = 40000; descripcion = "Membrana por rollo"; break;
-        case "membrana_liquida": precio = 12000; descripcion = "Membrana líquida/pasta"; break;
-      }
+      let item = precios[trabajo];
+      let subtotal = item.precio * cantidad;
 
-      let total = cantidad * precio;
-      let mensaje = `Presupuesto: ${descripcion} - ${cantidad} unidades = $${total.toLocaleString("es-AR")}`;
-      
-      document.getElementById("resultado").innerHTML = mensaje;
+      carrito.push({ trabajo: item.desc, cantidad, precio: item.precio, subtotal });
+      actualizarCarrito();
+    }
+
+    function eliminarItem(index) {
+      carrito.splice(index, 1);
+      actualizarCarrito();
+    }
+
+    function actualizarCarrito() {
+      let tbody = document.querySelector("#tablaCarrito tbody");
+      tbody.innerHTML = "";
+      let total = 0;
+      let mensaje = "Presupuesto solicitado:\n\n";
+
+      carrito.forEach((item, index) => {
+        total += item.subtotal;
+        mensaje += `${item.trabajo} - ${item.cantidad} x $${item.precio.toLocaleString("es-AR")} = $${item.subtotal.toLocaleString("es-AR")}\n`;
+
+        let fila = `<tr>
+          <td>${item.trabajo}</td>
+          <td>${item.cantidad}</td>
+          <td>$${item.precio.toLocaleString("es-AR")}</td>
+          <td>$${item.subtotal.toLocaleString("es-AR")}</td>
+          <td><button class="btn-eliminar" onclick="eliminarItem(${index})">Eliminar</button></td>
+        </tr>`;
+        tbody.innerHTML += fila;
+      });
+
+      document.getElementById("total").innerHTML = "Total: $" + total.toLocaleString("es-AR");
+      mensaje += `\nTOTAL: $${total.toLocaleString("es-AR")}`;
+
       let btn = document.getElementById("btnWhatsapp");
       btn.href = "https://wa.me/542284586475?text=" + encodeURIComponent(mensaje);
-      btn.style.display = "block";
+      btn.style.display = carrito.length > 0 ? "block" : "none";
     }
   </script>
 </body>
