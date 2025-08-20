@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Presupuesto - Illescas Construcciones</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    body { font-family: Arial, sans-serif; background:#f4f4f4; margin:0; padding:0; }
+    header { background:#2c3e50; color:#fff; padding:15px; text-align:center; }
+    .container { max-width:800px; margin:auto; padding:20px; }
+    h1 { color:#2c3e50; text-align:center; }
+    .calculadora { background:#fff; padding:20px; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
+    label { font-weight:bold; display:block; margin-top:10px; }
+    select, input { width:100%; padding:10px; margin-top:5px; border:1px solid #ccc; border-radius:5px; }
+    button { margin-top:15px; width:100%; background:#e67e22; border:none; color:#fff; padding:12px; font-size:16px; border-radius:5px; cursor:pointer; }
+    button:hover { background:#d35400; }
+    .resultado { margin-top:20px; font-weight:bold; text-align:center; font-size:18px; }
+    .whatsapp { display:none; margin-top:20px; background:#25D366; color:#fff; text-align:center; padding:12px; border-radius:5px; font-weight:bold; text-decoration:none; }
+    .whatsapp:hover { background:#20ba5b; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Calculadora de Presupuesto</h1>
+    <p>Illescas Construcciones - Olavarría</p>
+  </header>
+
+  <div class="container">
+    <div class="calculadora">
+      <label for="trabajo">Tipo de trabajo:</label>
+      <select id="trabajo">
+        <option value="zapata">Zapatas 1x1 (2 pisos) - $120.000 c/u</option>
+        <option value="encadenado">Encadenado lineal - $25.000 ml</option>
+        <option value="columna">Columnas - $25.000 ml</option>
+        <option value="viga">Vigas sup. armada - $25.000 ml</option>
+        <option value="losa_vigueta">Losa viguetas - $50.000 m²</option>
+        <option value="capa_aisladora">Capa aisladora - $20.000 ml</option>
+        <option value="losa_hormigon">Losa hormigón - $80.000 m²</option>
+        <option value="techo_chapa">Techo chapa c/ machimbre - $50.000 m²</option>
+        <option value="pared_comun">Pared ladrillo común - $25.000 m²</option>
+        <option value="ladrillo12">Pared ladrillo del 12 - $20.000 m²</option>
+        <option value="ladrillo8">Pared ladrillo del 8 - $12.000 m²</option>
+        <option value="revoque_int">Revoque interior - $20.000 m²</option>
+        <option value="revoque_ext">Revoque exterior - $30.000 m²</option>
+        <option value="coloc_puerta">Colocación de puerta - $120.000 c/u</option>
+        <option value="puerta_placa">Puerta de placa - $75.000 c/u</option>
+        <option value="ventana_std">Ventanas desde - $60.000 c/u</option>
+        <option value="ventana_grande">Ventanas 1.80x2.00 - $150.000 c/u</option>
+        <option value="pintura">Pintura látex - $10.000 m²</option>
+        <option value="enduido">Enduido por mano - $8.000 m²</option>
+        <option value="membrana_rollo">Membrana por rollo - $40.000 c/u</option>
+        <option value="membrana_liquida">Membrana líquida/pasta - $12.000 m²</option>
+      </select>
+
+      <label for="cantidad">Cantidad (m², ml o unidades):</label>
+      <input type="number" id="cantidad" placeholder="Ingrese cantidad" min="1">
+
+      <button onclick="calcular()">Calcular</button>
+
+      <div class="resultado" id="resultado"></div>
+      <a id="btnWhatsapp" href="#" target="_blank" class="whatsapp">Enviar por WhatsApp</a>
+    </div>
+  </div>
+
+  <script>
+    function calcular() {
+      let trabajo = document.getElementById("trabajo").value;
+      let cantidad = parseFloat(document.getElementById("cantidad").value);
+      let precio = 0, descripcion = "";
+
+      if (isNaN(cantidad) || cantidad <= 0) {
+        document.getElementById("resultado").innerHTML = "Ingrese una cantidad válida.";
+        document.getElementById("btnWhatsapp").style.display = "none";
+        return;
+      }
+
+      switch (trabajo) {
+        case "zapata": precio = 120000; descripcion = "Zapatas"; break;
+        case "encadenado": precio = 25000; descripcion = "Encadenado lineal"; break;
+        case "columna": precio = 25000; descripcion = "Columna"; break;
+        case "viga": precio = 25000; descripcion = "Viga sup. armada"; break;
+        case "losa_vigueta": precio = 50000; descripcion = "Losa viguetas"; break;
+        case "capa_aisladora": precio = 20000; descripcion = "Capa aisladora"; break;
+        case "losa_hormigon": precio = 80000; descripcion = "Losa de hormigón"; break;
+        case "techo_chapa": precio = 50000; descripcion = "Techo chapa c/ machimbre"; break;
+        case "pared_comun": precio = 25000; descripcion = "Pared ladrillo común"; break;
+        case "ladrillo12": precio = 20000; descripcion = "Pared ladrillo del 12"; break;
+        case "ladrillo8": precio = 12000; descripcion = "Pared ladrillo del 8"; break;
+        case "revoque_int": precio = 20000; descripcion = "Revoque interior"; break;
+        case "revoque_ext": precio = 30000; descripcion = "Revoque exterior"; break;
+        case "coloc_puerta": precio = 120000; descripcion = "Colocación de puerta"; break;
+        case "puerta_placa": precio = 75000; descripcion = "Puerta de placa"; break;
+        case "ventana_std": precio = 60000; descripcion = "Ventana estándar"; break;
+        case "ventana_grande": precio = 150000; descripcion = "Ventana 1.80x2.00"; break;
+        case "pintura": precio = 10000; descripcion = "Pintura látex"; break;
+        case "enduido": precio = 8000; descripcion = "Enduido"; break;
+        case "membrana_rollo": precio = 40000; descripcion = "Membrana por rollo"; break;
+        case "membrana_liquida": precio = 12000; descripcion = "Membrana líquida/pasta"; break;
+      }
+
+      let total = cantidad * precio;
+      let mensaje = `Presupuesto: ${descripcion} - ${cantidad} unidades = $${total.toLocaleString("es-AR")}`;
+      
+      document.getElementById("resultado").innerHTML = mensaje;
+      let btn = document.getElementById("btnWhatsapp");
+      btn.href = "https://wa.me/542284586475?text=" + encodeURIComponent(mensaje);
+      btn.style.display = "block";
+    }
+  </script>
+</body>
+</html>
