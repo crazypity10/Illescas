@@ -38,25 +38,38 @@
   </header>
 
   <div class="container">
-    <!-- CALCULADORA -->
     <div class="calculadora">
       <label for="trabajo">Tipo de trabajo:</label>
       <select id="trabajo">
         <option value="zapata">Zapatas 1x1 (2 pisos) - $120.000 c/u</option>
         <option value="encadenado">Encadenado lineal - $25.000 ml</option>
+        <option value="columnas">Columnas metro lineal - $25.000 ml</option>
+        <option value="vigas_sup_armada">Vigas sup. armada lineal - $25.000 ml</option>
+        <option value="losa_viguetas">Losa viguetas - $50.000 m²</option>
+        <option value="losa_hormigon">Losa hormigón - $80.000 m²</option>
+        <option value="capa_aisladora">Capa aisladora - $20.000 ml</option>
+        <option value="techo_chapa">Techo chapa c/ machimbre - $50.000 m²</option>
         <option value="pared_comun">Pared ladrillo común - $25.000 m²</option>
-        <option value="pared_hueco">Pared ladrillo hueco - $30.000 m²</option>
+        <option value="pared_hueco_12">Ladrillo del 12 - $20.000 m²</option>
+        <option value="pared_hueco_8">Ladrillo del 8 - $12.000 m²</option>
         <option value="revoque_fino">Revoque fino - $15.000 m²</option>
         <option value="revoque_grueso">Revoque grueso - $18.000 m²</option>
+        <option value="revoque_interior">Revoque interior - $20.000 m²</option>
+        <option value="revoque_ext">Revoque ext. (serecita + grueso) - $30.000 m²</option>
         <option value="pintura_latex">Pintura látex - $10.000 m²</option>
         <option value="pintura_sintetico">Pintura esmalte sintético - $12.000 m²</option>
+        <option value="enduido">Enduido por mano - $8.000 m²</option>
         <option value="piso_ceramico">Colocación piso cerámico - $20.000 m²</option>
         <option value="piso_pvc">Colocación piso PVC - $15.000 m²</option>
         <option value="revestimiento_plastico">Revestimiento plástico - $18.000 m²</option>
         <option value="cielorraso_yeso">Cielorraso de yeso - $22.000 m²</option>
         <option value="cielorraso_pvc">Cielorraso de PVC - $16.000 m²</option>
-        <option value="ventana">Ventana estándar - $60.000 c/u</option>
-        <option value="puerta">Puerta placa - $70.000 c/u</option>
+        <option value="colocacion_puerta">Colocación Puerta desde - $120.000 c/u</option>
+        <option value="puerta_placa">Puerta de placa - $75.000 c/u</option>
+        <option value="ventana_desde">Ventanas desde - $60.000 c/u</option>
+        <option value="ventana_grande">Ventanas 1.80x2.00 - $150.000 c/u</option>
+        <option value="membrana_rollo">Membrana por rollo - $40.000 c/u</option>
+        <option value="membrana_liquida">Membrana líquida.o pasta - $12.000 m²</option>
       </select>
 
       <label for="cantidad">Cantidad:</label>
@@ -65,7 +78,6 @@
       <button onclick="agregarAlCarrito()">Agregar al Presupuesto</button>
     </div>
 
-    <!-- CARRITO -->
     <div class="carrito">
       <h2>Tu Presupuesto</h2>
       <table id="tablaCarrito">
@@ -83,7 +95,6 @@
       <div class="resultado" id="total">Total: $0</div>
       <a id="btnWhatsapp" href="#" target="_blank" class="whatsapp">Enviar Presupuesto por WhatsApp</a>
 
-      <!-- BOTONES EXTRA -->
       <div class="acciones-extra">
         <button class="btn-vaciar" onclick="vaciarCarrito()">Vaciar Carrito</button>
         <a href="index.html" class="btn-inicio">Volver al Inicio</a>
@@ -95,19 +106,33 @@
     const precios = {
       zapata: { desc: "Zapatas 1x1 (2 pisos)", precio: 120000 },
       encadenado: { desc: "Encadenado lineal", precio: 25000 },
+      columnas: { desc: "Columnas metro lineal", precio: 25000 },
+      vigas_sup_armada: { desc: "Vigas sup. armada lineal", precio: 25000 },
+      losa_viguetas: { desc: "Losa viguetas", precio: 50000 },
+      losa_hormigon: { desc: "Losa hormigón", precio: 80000 },
+      capa_aisladora: { desc: "Capa aisladora", precio: 20000 },
+      techo_chapa: { desc: "Techo chapa c/ machimbre", precio: 50000 },
       pared_comun: { desc: "Pared ladrillo común", precio: 25000 },
-      pared_hueco: { desc: "Pared ladrillo hueco", precio: 30000 },
+      pared_hueco_12: { desc: "Ladrillo del 12", precio: 20000 },
+      pared_hueco_8: { desc: "Ladrillo del 8", precio: 12000 },
       revoque_fino: { desc: "Revoque fino", precio: 15000 },
       revoque_grueso: { desc: "Revoque grueso", precio: 18000 },
+      revoque_interior: { desc: "Revoque interior", precio: 20000 },
+      revoque_ext: { desc: "Revoque ext. (serecita + grueso)", precio: 30000 },
       pintura_latex: { desc: "Pintura látex", precio: 10000 },
       pintura_sintetico: { desc: "Pintura esmalte sintético", precio: 12000 },
+      enduido: { desc: "Enduido por mano", precio: 8000 },
       piso_ceramico: { desc: "Colocación piso cerámico", precio: 20000 },
       piso_pvc: { desc: "Colocación piso PVC", precio: 15000 },
       revestimiento_plastico: { desc: "Revestimiento plástico", precio: 18000 },
       cielorraso_yeso: { desc: "Cielorraso de yeso", precio: 22000 },
       cielorraso_pvc: { desc: "Cielorraso de PVC", precio: 16000 },
-      ventana: { desc: "Ventana estándar", precio: 60000 },
-      puerta: { desc: "Puerta placa", precio: 70000 },
+      colocacion_puerta: { desc: "Colocación Puerta desde", precio: 120000 },
+      puerta_placa: { desc: "Puerta de placa", precio: 75000 },
+      ventana_desde: { desc: "Ventanas desde", precio: 60000 },
+      ventana_grande: { desc: "Ventanas 1.80x2.00", precio: 150000 },
+      membrana_rollo: { desc: "Membrana por rollo", precio: 40000 },
+      membrana_liquida: { desc: "Membrana líquida.o pasta", precio: 12000 },
     };
 
     let carrito = [];
