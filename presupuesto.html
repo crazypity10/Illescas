@@ -29,6 +29,8 @@
     .btn-vaciar:hover { background:#b52a37; }
     .btn-inicio { background:#007bff; color:white; }
     .btn-inicio:hover { background:#0056b3; }
+    .download-btn { display: none; background: #3498db; color: white; margin-top: 10px; }
+    .download-btn:hover { background: #2980b9; }
   </style>
 </head>
 <body>
@@ -93,8 +95,10 @@
         <tbody></tbody>
       </table>
       <div class="resultado" id="total">Total: $0</div>
-      <a id="btnWhatsapp" href="#" target="_blank" class="whatsapp">Enviar Presupuesto por WhatsApp</a>
-
+      <div style="text-align: center;">
+        <a id="btnWhatsapp" href="#" target="_blank" class="whatsapp">Enviar por WhatsApp</a>
+        <button id="btnDownload" class="download-btn" onclick="descargarPresupuesto()">Descargar Presupuesto</button>
+      </div>
       <div class="acciones-extra">
         <button class="btn-vaciar" onclick="vaciarCarrito()">Vaciar Carrito</button>
         <a href="index.html" class="btn-inicio">Volver al Inicio</a>
@@ -167,11 +171,13 @@
       let tbody = document.querySelector("#tablaCarrito tbody");
       tbody.innerHTML = "";
       let total = 0;
-      let mensaje = "Presupuesto solicitado:\\n\\n";
+      let mensajeWhatsapp = "Presupuesto solicitado:\n\n";
+      let mensajeDescarga = "--- Presupuesto Illescas Construcciones ---\n\n";
 
       carrito.forEach((item, index) => {
         total += item.subtotal;
-        mensaje += `${item.trabajo} - ${item.cantidad} x $${item.precio.toLocaleString("es-AR")} = $${item.subtotal.toLocaleString("es-AR")}\\n`;
+        mensajeWhatsapp += `${item.trabajo} - ${item.cantidad} x $${item.precio.toLocaleString("es-AR")} = $${item.subtotal.toLocaleString("es-AR")}\n`;
+        mensajeDescarga += `${item.trabajo} - ${item.cantidad} x $${item.precio.toLocaleString("es-AR")} = $${item.subtotal.toLocaleString("es-AR")}\n`;
 
         tbody.innerHTML += `<tr>
           <td>${item.trabajo}</td>
@@ -183,11 +189,53 @@
       });
 
       document.getElementById("total").innerHTML = "Total: $" + total.toLocaleString("es-AR");
-      mensaje += `\\nTOTAL: $${total.toLocaleString("es-AR")}`;
+      
+      mensajeWhatsapp += `\nTOTAL: $${total.toLocaleString("es-AR")}`;
+      mensajeDescarga += `\nTOTAL: $${total.toLocaleString("es-AR")}\n\n`;
+      mensajeDescarga += `--- Datos de Contacto ---\n`;
+      mensajeDescarga += `Empresa: Illescas Construcciones\n`;
+      mensajeDescarga += `Celular: +54 2284 58-6475\n`;
+      mensajeDescarga += `Teléfono: 410995\n`;
+      mensajeDescarga += `Localidad: Olavarría\n`;
 
-      let btn = document.getElementById("btnWhatsapp");
-      btn.href = "https://wa.me/542284586475?text=" + encodeURIComponent(mensaje);
-      btn.style.display = carrito.length > 0 ? "block" : "none";
+      let btnWhatsapp = document.getElementById("btnWhatsapp");
+      btnWhatsapp.href = "https://wa.me/542284586475?text=" + encodeURIComponent(mensajeWhatsapp);
+      
+      let btnDownload = document.getElementById("btnDownload");
+      btnWhatsapp.style.display = carrito.length > 0 ? "inline-block" : "none";
+      btnDownload.style.display = carrito.length > 0 ? "inline-block" : "none";
+    }
+
+    function descargarPresupuesto() {
+      if (carrito.length === 0) {
+        alert("El carrito está vacío. Agregue un artículo para descargar el presupuesto.");
+        return;
+      }
+      
+      let total = 0;
+      let mensaje = `--- Presupuesto Illescas Construcciones ---\n\n`;
+      
+      carrito.forEach((item) => {
+        total += item.subtotal;
+        mensaje += `${item.trabajo} - ${item.cantidad} x $${item.precio.toLocaleString("es-AR")} = $${item.subtotal.toLocaleString("es-AR")}\n`;
+      });
+      
+      mensaje += `\nTOTAL: $${total.toLocaleString("es-AR")}\n\n`;
+      mensaje += `--- Datos de Contacto ---\n`;
+      mensaje += `Empresa: Illescas Construcciones\n`;
+      mensaje += `Celular: +54 2284 58-6475\n`;
+      mensaje += `Teléfono: 410995\n`;
+      mensaje += `Localidad: Olavarría\n`;
+
+      const blob = new Blob([mensaje], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'presupuesto_illescas.txt';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     }
   </script>
 </body>
