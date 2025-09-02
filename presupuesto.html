@@ -1,242 +1,709 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculadora de Presupuesto - Illescas Construcciones</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-  <style>
-    body { font-family: Arial, sans-serif; background:#f4f4f4; margin:0; padding:0; }
-    header { background:#2c3e50; color:#fff; padding:15px; text-align:center; }
-    .container { max-width:900px; margin:auto; padding:20px; }
-    h1 { color:#2c3e50; text-align:center; }
-    .calculadora, .carrito { background:#fff; padding:20px; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.1); margin-bottom:20px; }
-    label { font-weight:bold; display:block; margin-top:10px; }
-    select, input { width:100%; padding:10px; margin-top:5px; border:1px solid #ccc; border-radius:5px; }
-    button { margin-top:15px; width:100%; background:#e67e22; border:none; color:#fff; padding:12px; font-size:16px; border-radius:5px; cursor:pointer; }
-    button:hover { background:#d35400; }
-    .resultado { margin-top:20px; font-weight:bold; text-align:center; font-size:18px; }
-    table { width:100%; border-collapse:collapse; margin-top:10px; }
-    th, td { border:1px solid #ccc; padding:10px; text-align:center; }
-    th { background:#2c3e50; color:white; }
-    .btn-eliminar { background:#dc3545; color:white; border:none; padding:6px 12px; border-radius:5px; cursor:pointer; }
-    .btn-eliminar:hover { background:#b52a37; }
-    .whatsapp { display:none; margin-top:20px; background:#25D366; color:#fff; text-align:center; padding:12px; border-radius:5px; font-weight:bold; text-decoration:none; }
-    .whatsapp:hover { background:#20ba5b; }
-    .acciones-extra { margin-top:20px; text-align:center; }
-    .acciones-extra button, .acciones-extra a { display:inline-block; margin:5px; padding:12px 20px; border:none; border-radius:5px; font-size:16px; text-decoration:none; cursor:pointer; }
-    .btn-vaciar { background:#dc3545; color:white; }
-    .btn-vaciar:hover { background:#b52a37; }
-    .btn-inicio { background:#007bff; color:white; }
-    .btn-inicio:hover { background:#0056b3; }
-    .download-btn { display: none; background: #3498db; color: white; margin-top: 10px; }
-    .download-btn:hover { background: #2980b9; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Presupuesto - Illescas Construcciones</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0f172a;
+            --secondary-color: #f59e0b;
+            --accent-color: #ef4444;
+            --success-color: #10b981;
+            --light-color: #f8fafc;
+            --white: #ffffff;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-600: #475569;
+            --gray-800: #1e293b;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            --border-radius: 12px;
+            --font-primary: 'Poppins', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            line-height: 1.6;
+            color: var(--gray-800);
+            background: var(--light-color);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* HEADER MODERNO */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--gray-800));
+            color: var(--white);
+            padding: 60px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="dots" patternUnits="userSpaceOnUse" width="10" height="10"><circle cx="5" cy="5" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23dots)"/></svg>');
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        header h1 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -0.025em;
+        }
+
+        header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .highlight {
+            color: var(--secondary-color);
+        }
+
+        /* MAIN CONTENT */
+        main {
+            padding: 80px 0;
+        }
+
+        .calculadora-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+        }
+
+        .card h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--secondary-color), #d97706);
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-icon i {
+            font-size: 20px;
+            color: var(--white);
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            font-family: var(--font-primary);
+            transition: all 0.3s ease;
+            background: var(--white);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+        }
+
+        select.form-control {
+            cursor: pointer;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 16px 32px;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-family: var(--font-primary);
+        }
+
+        .btn-primary {
+            background: var(--secondary-color);
+            color: var(--white);
+            box-shadow: var(--shadow);
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background: #d97706;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-success {
+            background: var(--success-color);
+            color: var(--white);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-success:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-danger {
+            background: var(--accent-color);
+            color: var(--white);
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .btn-secondary {
+            background: var(--gray-600);
+            color: var(--white);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-color);
+        }
+
+        /* CARRITO/PRESUPUESTO */
+        .presupuesto-card {
+            grid-column: 1 / -1;
+        }
+
+        .tabla-container {
+            overflow-x: auto;
+            margin: 24px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--white);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        th {
+            background: var(--primary-color);
+            color: var(--white);
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid var(--gray-200);
+            font-size: 15px;
+        }
+
+        tbody tr:hover {
+            background: var(--gray-100);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .total-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--gray-800));
+            color: var(--white);
+            padding: 32px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            margin: 32px 0;
+        }
+
+        .total-amount {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            color: var(--secondary-color);
+        }
+
+        .total-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .acciones-container {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 32px;
+        }
+
+        .whatsapp-btn {
+            background: #25d366;
+            color: var(--white);
+            text-decoration: none;
+            display: none;
+        }
+
+        .whatsapp-btn:hover {
+            background: #20ba5b;
+        }
+
+        .download-btn {
+            display: none;
+            background: #3498db;
+            color: var(--white);
+        }
+
+        .download-btn:hover {
+            background: #2980b9;
+        }
+
+        /* EMPTY STATE */
+        .empty-state {
+            text-align: center;
+            padding: 60px 32px;
+            color: var(--gray-600);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 24px;
+            opacity: 0.3;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .empty-state p {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        /* BADGES Y TAGS */
+        .precio-badge {
+            background: linear-gradient(135deg, var(--success-color), #059669);
+            color: var(--white);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* ANIMACIONES */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .slide-in {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 768px) {
+            .calculadora-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .card {
+                padding: 24px;
+            }
+
+            header {
+                padding: 40px 0;
+            }
+
+            main {
+                padding: 40px 0;
+            }
+
+            .acciones-container {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            table {
+                font-size: 14px;
+            }
+
+            th, td {
+                padding: 12px 8px;
+            }
+
+            .total-amount {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 16px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .total-section {
+                padding: 24px;
+            }
+        }
+
+        /* MEJORAS VISUALES */
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s ease;
+        }
+
+        .item-row {
+            transition: all 0.3s ease;
+        }
+
+        .item-row.removing {
+            opacity: 0;
+            transform: translateX(-100%);
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Calculadora de Presupuesto</h1>
-    <p>Illescas Construcciones - Olavarría</p>
-  </header>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <h1>Calculadora de <span class="highlight">Presupuesto</span></h1>
+                <p class="subtitle">Illescas Construcciones - Olavarría</p>
+            </div>
+        </div>
+    </header>
 
-  <div class="container">
-    <div class="calculadora">
-      <label for="trabajo">Tipo de trabajo:</label>
-      <select id="trabajo">
-        <option value="zapata">Zapatas 1x1 (2 pisos) - $120.000 c/u</option>
-        <option value="encadenado">Encadenado lineal - $25.000 ml</option>
-        <option value="columnas">Columnas metro lineal - $25.000 ml</option>
-        <option value="vigas_sup_armada">Vigas sup. armada lineal - $25.000 ml</option>
-        <option value="losa_viguetas">Losa viguetas - $50.000 m²</option>
-        <option value="losa_hormigon">Losa hormigón - $80.000 m²</option>
-        <option value="capa_aisladora">Capa aisladora - $20.000 ml</option>
-        <option value="techo_chapa">Techo chapa c/ machimbre - $50.000 m²</option>
-        <option value="pared_comun">Pared ladrillo común - $25.000 m²</option>
-        <option value="pared_hueco_12">Ladrillo del 12 - $20.000 m²</option>
-        <option value="pared_hueco_8">Ladrillo del 8 - $12.000 m²</option>
-        <option value="revoque_fino">Revoque fino - $15.000 m²</option>
-        <option value="revoque_grueso">Revoque grueso - $18.000 m²</option>
-        <option value="revoque_interior">Revoque interior - $20.000 m²</option>
-        <option value="revoque_ext">Revoque ext. (serecita + grueso) - $30.000 m²</option>
-        <option value="pintura_latex">Pintura látex - $10.000 m²</option>
-        <option value="pintura_sintetico">Pintura esmalte sintético - $12.000 m²</option>
-        <option value="enduido">Enduido por mano - $8.000 m²</option>
-        <option value="piso_ceramico">Colocación piso cerámico - $20.000 m²</option>
-        <option value="piso_pvc">Colocación piso PVC - $15.000 m²</option>
-        <option value="revestimiento_plastico">Revestimiento plástico - $18.000 m²</option>
-        <option value="cielorraso_yeso">Cielorraso de yeso - $22.000 m²</option>
-        <option value="cielorraso_pvc">Cielorraso de PVC - $16.000 m²</option>
-        <option value="colocacion_puerta">Colocación Puerta desde - $120.000 c/u</option>
-        <option value="puerta_placa">Puerta de placa - $75.000 c/u</option>
-        <option value="ventana_desde">Ventanas desde - $60.000 c/u</option>
-        <option value="ventana_grande">Ventanas 1.80x2.00 - $150.000 c/u</option>
-        <option value="membrana_rollo">Membrana por rollo - $40.000 c/u</option>
-        <option value="membrana_liquida">Membrana líquida.o pasta - $12.000 m²</option>
-      </select>
+    <main>
+        <div class="container">
+            <div class="calculadora-grid">
+                <!-- CALCULADORA -->
+                <div class="card">
+                    <h2>
+                        <div class="card-icon">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        Agregar Trabajo
+                    </h2>
 
-      <label for="cantidad">Cantidad:</label>
-      <input type="number" id="cantidad" placeholder="Ingrese cantidad" min="1">
+                    <div class="form-group">
+                        <label for="trabajo" class="form-label">Tipo de trabajo</label>
+                        <select id="trabajo" class="form-control">
+                            <option value="zapata">Zapatas 1x1 (2 pisos) - $120.000 c/u</option>
+                            <option value="encadenado">Encadenado lineal - $25.000 ml</option>
+                            <option value="columnas">Columnas metro lineal - $25.000 ml</option>
+                            <option value="vigas_sup_armada">Vigas sup. armada lineal - $25.000 ml</option>
+                            <option value="losa_viguetas">Losa viguetas - $50.000 m²</option>
+                            <option value="losa_hormigon">Losa hormigón - $80.000 m²</option>
+                            <option value="capa_aisladora">Capa aisladora - $20.000 ml</option>
+                            <option value="techo_chapa">Techo chapa c/ machimbre - $50.000 m²</option>
+                            <option value="pared_comun">Pared ladrillo común - $25.000 m²</option>
+                            <option value="pared_hueco_12">Ladrillo del 12 - $20.000 m²</option>
+                            <option value="pared_hueco_8">Ladrillo del 8 - $12.000 m²</option>
+                            <option value="revoque_fino">Revoque fino - $15.000 m²</option>
+                            <option value="revoque_grueso">Revoque grueso - $18.000 m²</option>
+                            <option value="revoque_interior">Revoque interior - $20.000 m²</option>
+                            <option value="revoque_ext">Revoque ext. (serecita + grueso) - $30.000 m²</option>
+                            <option value="pintura_latex">Pintura látex - $10.000 m²</option>
+                            <option value="pintura_sintetico">Pintura esmalte sintético - $12.000 m²</option>
+                            <option value="enduido">Enduido por mano - $8.000 m²</option>
+                            <option value="piso_ceramico">Colocación piso cerámico - $20.000 m²</option>
+                            <option value="piso_pvc">Colocación piso PVC - $15.000 m²</option>
+                            <option value="revestimiento_plastico">Revestimiento plástico - $18.000 m²</option>
+                            <option value="cielorraso_yeso">Cielorraso de yeso - $22.000 m²</option>
+                            <option value="cielorraso_pvc">Cielorraso de PVC - $16.000 m²</option>
+                            <option value="colocacion_puerta">Colocación Puerta desde - $120.000 c/u</option>
+                            <option value="puerta_placa">Puerta de placa - $75.000 c/u</option>
+                            <option value="ventana_desde">Ventanas desde - $60.000 c/u</option>
+                            <option value="ventana_grande">Ventanas 1.80x2.00 - $150.000 c/u</option>
+                            <option value="membrana_rollo">Membrana por rollo - $40.000 c/u</option>
+                            <option value="membrana_liquida">Membrana líquida.o pasta - $12.000 m²</option>
+                        </select>
+                    </div>
 
-      <button onclick="agregarAlCarrito()">Agregar al Presupuesto</button>
-    </div>
+                    <div class="form-group">
+                        <label for="cantidad" class="form-label">Cantidad</label>
+                        <input type="number" id="cantidad" class="form-control" placeholder="Ingrese cantidad" min="1" step="0.1">
+                    </div>
 
-    <div class="carrito">
-      <h2>Tu Presupuesto</h2>
-      <table id="tablaCarrito">
-        <thead>
-          <tr>
-            <th>Trabajo</th>
-            <th>Cantidad</th>
-            <th>Precio unitario</th>
-            <th>Subtotal</th>
-            <th>Acción</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-      <div class="resultado" id="total">Total: $0</div>
-      <div style="text-align: center;">
-        <a id="btnWhatsapp" href="#" target="_blank" class="whatsapp">Enviar por WhatsApp</a>
-        <button id="btnDownload" class="download-btn" onclick="descargarPresupuesto()">Descargar Presupuesto</button>
-      </div>
-      <div class="acciones-extra">
-        <button class="btn-vaciar" onclick="vaciarCarrito()">Vaciar Carrito</button>
-        <a href="index.html" class="btn-inicio">Volver al Inicio</a>
-      </div>
-    </div>
-  </div>
+                    <button onclick="agregarAlCarrito()" class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Agregar al Presupuesto
+                    </button>
+                </div>
 
-  <script>
-    const precios = {
-      zapata: { desc: "Zapatas 1x1 (2 pisos)", precio: 120000 },
-      encadenado: { desc: "Encadenado lineal", precio: 25000 },
-      columnas: { desc: "Columnas metro lineal", precio: 25000 },
-      vigas_sup_armada: { desc: "Vigas sup. armada lineal", precio: 25000 },
-      losa_viguetas: { desc: "Losa viguetas", precio: 50000 },
-      losa_hormigon: { desc: "Losa hormigón", precio: 80000 },
-      capa_aisladora: { desc: "Capa aisladora", precio: 20000 },
-      techo_chapa: { desc: "Techo chapa c/ machimbre", precio: 50000 },
-      pared_comun: { desc: "Pared ladrillo común", precio: 25000 },
-      pared_hueco_12: { desc: "Ladrillo del 12", precio: 20000 },
-      pared_hueco_8: { desc: "Ladrillo del 8", precio: 12000 },
-      revoque_fino: { desc: "Revoque fino", precio: 15000 },
-      revoque_grueso: { desc: "Revoque grueso", precio: 18000 },
-      revoque_interior: { desc: "Revoque interior", precio: 20000 },
-      revoque_ext: { desc: "Revoque ext. (serecita + grueso)", precio: 30000 },
-      pintura_latex: { desc: "Pintura látex", precio: 10000 },
-      pintura_sintetico: { desc: "Pintura esmalte sintético", precio: 12000 },
-      enduido: { desc: "Enduido por mano", precio: 8000 },
-      piso_ceramico: { desc: "Colocación piso cerámico", precio: 20000 },
-      piso_pvc: { desc: "Colocación piso PVC", precio: 15000 },
-      revestimiento_plastico: { desc: "Revestimiento plástico", precio: 18000 },
-      cielorraso_yeso: { desc: "Cielorraso de yeso", precio: 22000 },
-      cielorraso_pvc: { desc: "Cielorraso de PVC", precio: 16000 },
-      colocacion_puerta: { desc: "Colocación Puerta desde", precio: 120000 },
-      puerta_placa: { desc: "Puerta de placa", precio: 75000 },
-      ventana_desde: { desc: "Ventanas desde", precio: 60000 },
-      ventana_grande: { desc: "Ventanas 1.80x2.00", precio: 150000 },
-      membrana_rollo: { desc: "Membrana por rollo", precio: 40000 },
-      membrana_liquida: { desc: "Membrana líquida.o pasta", precio: 12000 },
-    };
+                <!-- RESUMEN RÁPIDO -->
+                <div class="card">
+                    <h2>
+                        <div class="card-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        Resumen
+                    </h2>
+                    
+                    <div class="resumen-stats">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding: 16px; background: var(--gray-100); border-radius: 8px;">
+                            <span style="font-weight: 600; color: var(--gray-600);">Total de trabajos:</span>
+                            <span id="totalTrabajos" style="font-weight: 700; color: var(--primary-color); font-size: 1.2rem;">0</span>
+                        </div>
+                        
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding: 16px; background: var(--gray-100); border-radius: 8px;">
+                            <span style="font-weight: 600; color: var(--gray-600);">Subtotal actual:</span>
+                            <span id="subtotalActual" style="font-weight: 700; color: var(--success-color); font-size: 1.2rem;">$0</span>
+                        </div>
+                    </div>
 
-    let carrito = [];
+                    <div class="info-box" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.05)); border: 1px solid rgba(245, 158, 11, 0.2); border-radius: var(--border-radius); padding: 20px;">
+                        <h4 style="color: var(--secondary-color); margin-bottom: 12px; font-size: 1.1rem;">
+                            <i class="fas fa-info-circle"></i> Información
+                        </h4>
+                        <p style="font-size: 0.95rem; color: var(--gray-600); line-height: 1.5;">
+                            Los precios son aproximados y pueden variar según las características específicas de tu proyecto. Para un presupuesto detallado, contáctanos.
+                        </p>
+                    </div>
+                </div>
+            </div>
 
-    function agregarAlCarrito() {
-      let trabajo = document.getElementById("trabajo").value;
-      let cantidad = parseFloat(document.getElementById("cantidad").value);
+            <!-- PRESUPUESTO DETALLADO -->
+            <div class="card presupuesto-card">
+                <h2>
+                    <div class="card-icon">
+                        <i class="fas fa-list-alt"></i>
+                    </div>
+                    Tu Presupuesto Detallado
+                </h2>
 
-      if (isNaN(cantidad) || cantidad <= 0) {
-        alert("Ingrese una cantidad válida.");
-        return;
-      }
+                <div id="contenidoPresupuesto">
+                    <div class="empty-state">
+                        <i class="fas fa-clipboard-list"></i>
+                        <h3>Presupuesto vacío</h3>
+                        <p>Agrega trabajos usando la calculadora de arriba para ver tu presupuesto detallado</p>
+                    </div>
+                </div>
 
-      let item = precios[trabajo];
-      let subtotal = item.precio * cantidad;
+                <div class="tabla-container" id="tablaContainer" style="display: none;">
+                    <table id="tablaCarrito">
+                        <thead>
+                            <tr>
+                                <th>Trabajo</th>
+                                <th>Cantidad</th>
+                                <th>Precio Unitario</th>
+                                <th>Subtotal</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
 
-      carrito.push({ trabajo: item.desc, cantidad, precio: item.precio, subtotal });
-      actualizarCarrito();
-    }
+                <div id="totalSection" class="total-section" style="display: none;">
+                    <div class="total-amount" id="totalAmount">$0</div>
+                    <div class="total-label">Total del Presupuesto</div>
+                </div>
 
-    function eliminarItem(index) {
-      carrito.splice(index, 1);
-      actualizarCarrito();
-    }
+                <div class="acciones-container">
+                    <a id="btnWhatsapp" href="#" target="_blank" class="btn whatsapp-btn">
+                        <i class="fab fa-whatsapp"></i>
+                        Enviar por WhatsApp
+                    </a>
+                    <button id="btnDownload" class="btn download-btn" onclick="descargarPresupuesto()">
+                        <i class="fas fa-download"></i>
+                        Descargar Presupuesto
+                    </button>
+                    <button class="btn btn-danger" onclick="vaciarCarrito()" id="btnVaciar" style="display: none;">
+                        <i class="fas fa-trash"></i>
+                        Vaciar Todo
+                    </button>
+                    <a href="index.html" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i>
+                        Volver al Inicio
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
 
-    function vaciarCarrito() {
-      carrito = [];
-      actualizarCarrito();
-    }
+    <script>
+        const precios = {
+            zapata: { desc: "Zapatas 1x1 (2 pisos)", precio: 120000, unidad: "c/u" },
+            encadenado: { desc: "Encadenado lineal", precio: 25000, unidad: "ml" },
+            columnas: { desc: "Columnas metro lineal", precio: 25000, unidad: "ml" },
+            vigas_sup_armada: { desc: "Vigas sup. armada lineal", precio: 25000, unidad: "ml" },
+            losa_viguetas: { desc: "Losa viguetas", precio: 50000, unidad: "m²" },
+            losa_hormigon: { desc: "Losa hormigón", precio: 80000, unidad: "m²" },
+            capa_aisladora: { desc: "Capa aisladora", precio: 20000, unidad: "ml" },
+            techo_chapa: { desc: "Techo chapa c/ machimbre", precio: 50000, unidad: "m²" },
+            pared_comun: { desc: "Pared ladrillo común", precio: 25000, unidad: "m²" },
+            pared_hueco_12: { desc: "Ladrillo del 12", precio: 20000, unidad: "m²" },
+            pared_hueco_8: { desc: "Ladrillo del 8", precio: 12000, unidad: "m²" },
+            revoque_fino: { desc: "Revoque fino", precio: 15000, unidad: "m²" },
+            revoque_grueso: { desc: "Revoque grueso", precio: 18000, unidad: "m²" },
+            revoque_interior: { desc: "Revoque interior", precio: 20000, unidad: "m²" },
+            revoque_ext: { desc: "Revoque ext. (serecita + grueso)", precio: 30000, unidad: "m²" },
+            pintura_latex: { desc: "Pintura látex", precio: 10000, unidad: "m²" },
+            pintura_sintetico: { desc: "Pintura esmalte sintético", precio: 12000, unidad: "m²" },
+            enduido: { desc: "Enduido por mano", precio: 8000, unidad: "m²" },
+            piso_ceramico: { desc: "Colocación piso cerámico", precio: 20000, unidad: "m²" },
+            piso_pvc: { desc: "Colocación piso PVC", precio: 15000, unidad: "m²" },
+            revestimiento_plastico: { desc: "Revestimiento plástico", precio: 18000, unidad: "m²" },
+            cielorraso_yeso: { desc: "Cielorraso de yeso", precio: 22000, unidad: "m²" },
+            cielorraso_pvc: { desc: "Cielorraso de PVC", precio: 16000, unidad: "m²" },
+            colocacion_puerta: { desc: "Colocación Puerta desde", precio: 120000, unidad: "c/u" },
+            puerta_placa: { desc: "Puerta de placa", precio: 75000, unidad: "c/u" },
+            ventana_desde: { desc: "Ventanas desde", precio: 60000, unidad: "c/u" },
+            ventana_grande: { desc: "Ventanas 1.80x2.00", precio: 150000, unidad: "c/u" },
+            membrana_rollo: { desc: "Membrana por rollo", precio: 40000, unidad: "c/u" },
+            membrana_liquida: { desc: "Membrana líquida.o pasta", precio: 12000, unidad: "m²" },
+        };
 
-    function actualizarCarrito() {
-      let tbody = document.querySelector("#tablaCarrito tbody");
-      tbody.innerHTML = "";
-      let total = 0;
-      let mensajeWhatsapp = "Presupuesto solicitado:\n\n";
-      let mensajeDescarga = "--- Presupuesto Illescas Construcciones ---\n\n";
+        let carrito = [];
 
-      carrito.forEach((item, index) => {
-        total += item.subtotal;
-        mensajeWhatsapp += `${item.trabajo} - ${item.cantidad} x $${item.precio.toLocaleString("es-AR")} = $${item.subtotal.toLocaleString("es-AR")}\n`;
-        mensajeDescarga += `${item.trabajo} - ${item.cantidad} x $${item.precio.toLocaleString("es-AR")} = $${item.subtotal.toLocaleString("es-AR")}\n`;
+        function agregarAlCarrito() {
+            const trabajo = document.getElementById("trabajo").value;
+            const cantidadInput = document.getElementById("cantidad");
+            const cantidad = parseFloat(cantidadInput.value);
 
-        tbody.innerHTML += `<tr>
-          <td>${item.trabajo}</td>
-          <td>${item.cantidad}</td>
-          <td>$${item.precio.toLocaleString("es-AR")}</td>
-          <td>$${item.subtotal.toLocaleString("es-AR")}</td>
-          <td><button class="btn-eliminar" onclick="eliminarItem(${index})">Eliminar</button></td>
-        </tr>`;
-      });
+            if (isNaN(cantidad) || cantidad <= 0) {
+                mostrarMensaje("Por favor, ingrese una cantidad válida mayor a 0", "error");
+                cantidadInput.focus();
+                return;
+            }
 
-      document.getElementById("total").innerHTML = "Total: $" + total.toLocaleString("es-AR");
-      
-      mensajeWhatsapp += `\nTOTAL: $${total.toLocaleString("es-AR")}`;
-      mensajeDescarga += `\nTOTAL: $${total.toLocaleString("es-AR")}\n\n`;
-      mensajeDescarga += `--- Datos de Contacto ---\n`;
-      mensajeDescarga += `Empresa: Illescas Construcciones\n`;
-      mensajeDescarga += `Celular: +54 2284 58-6475\n`;
-      mensajeDescarga += `Teléfono: 410995\n`;
-      mensajeDescarga += `Localidad: Olavarría\n`;
+            const item = precios[trabajo];
+            const subtotal = item.precio * cantidad;
 
-      let btnWhatsapp = document.getElementById("btnWhatsapp");
-      btnWhatsapp.href = "https://wa.me/542284586475?text=" + encodeURIComponent(mensajeWhatsapp);
-      
-      let btnDownload = document.getElementById("btnDownload");
-      btnWhatsapp.style.display = carrito.length > 0 ? "inline-block" : "none";
-      btnDownload.style.display = carrito.length > 0 ? "inline-block" : "none";
-    }
+            carrito.push({ 
+                id: Date.now(),
+                trabajo: item.desc, 
+                cantidad: cantidad, 
+                precio: item.precio, 
+                subtotal: subtotal,
+                unidad: item.unidad
+            });
 
-    function descargarPresupuesto() {
-      if (carrito.length === 0) {
-        alert("El carrito está vacío. Agregue un artículo para descargar el presupuesto.");
-        return;
-      }
-      
-      let total = 0;
-      let mensaje = `--- Presupuesto Illescas Construcciones ---\n\n`;
-      
-      carrito.forEach((item) => {
-        total += item.subtotal;
-        mensaje += `${item.trabajo} - ${item.cantidad} x $${item.precio.toLocaleString("es-AR")} = $${item.subtotal.toLocaleString("es-AR")}\n`;
-      });
-      
-      mensaje += `\nTOTAL: $${total.toLocaleString("es-AR")}\n\n`;
-      mensaje += `--- Datos de Contacto ---\n`;
-      mensaje += `Empresa: Illescas Construcciones\n`;
-      mensaje += `Celular: +54 2284 58-6475\n`;
-      mensaje += `Teléfono: 410995\n`;
-      mensaje += `Localidad: Olavarría\n`;
+            cantidadInput.value = "";
+            actualizarCarrito();
+            mostrarMensaje("Trabajo agregado correctamente", "success");
+        }
 
-      const blob = new Blob([mensaje], { type: 'text/plain' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'presupuesto_illescas.txt';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }
-  </script>
-</body>
-</html>
+        function eliminarItem(id) {
+            const row = document.querySelector(`tr[data-id="${id}"]`);
+            if (row) {
+                row.classList.add('removing');
+                setTimeout(() => {
+                    carrito = carrito.filter(item => item.id !== id);
+                    actualizarCarrito();
+                    mostrarMensaje("Trabajo eliminado", "info");
+                }, 300);
+            }
+        }
+
+        function vaciarCarrito() {
+            if (carrito.length === 0) {
+                mostrarMensaje("El carrito ya está vacío", "info");
+                return;
+            }
+
+            if (confirm("¿Estás seguro de que quieres vaciar todo el presupuesto?")) {
+                carrito = [];
+                actualizarCarrito();
+                mostrarMensaje("Presupuesto vaciado", "info");
+            }
+        }
+
+        function actualizarCarrito() {
+            const tbody = document.querySelector("#tablaCarrito tbody");
+            const contenidoPresupuesto = document.getElementById("contenidoPresupuesto");
+            const tablaContainer = document.getElementById("tablaContainer");
+            const totalSection =
