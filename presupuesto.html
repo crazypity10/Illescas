@@ -706,4 +706,242 @@
             const tbody = document.querySelector("#tablaCarrito tbody");
             const contenidoPresupuesto = document.getElementById("contenidoPresupuesto");
             const tablaContainer = document.getElementById("tablaContainer");
-            const totalSection =
+            const totalSection = document.getElementById("totalSection");
+            const btnWhatsapp = document.getElementById("btnWhatsapp");
+            const btnDownload = document.getElementById("btnDownload");
+            const btnVaciar = document.getElementById("btnVaciar");
+
+            // Limpiar tabla
+            tbody.innerHTML = "";
+            let total = 0;
+
+            if (carrito.length === 0) {
+                // Mostrar estado vacío
+                contenidoPresupuesto.style.display = "block";
+                tablaContainer.style.display = "none";
+                totalSection.style.display = "none";
+                btnWhatsapp.style.display = "none";
+                btnDownload.style.display = "none";
+                btnVaciar.style.display = "none";
+            } else {
+                // Mostrar tabla con datos
+                contenidoPresupuesto.style.display = "none";
+                tablaContainer.style.display = "block";
+                totalSection.style.display = "block";
+                btnWhatsapp.style.display = "inline-flex";
+                btnDownload.style.display = "inline-flex";
+                btnVaciar.style.display = "inline-flex";
+
+                carrito.forEach((item, index) => {
+                    total += item.subtotal;
+
+                    const row = document.createElement('tr');
+                    row.setAttribute('data-id', item.id);
+                    row.className = 'item-row fade-in';
+                    
+                    row.innerHTML = `
+                        <td>
+                            <div style="font-weight: 600; color: var(--primary-color);">${item.trabajo}</div>
+                            <div style="font-size: 0.85rem; color: var(--gray-600); margin-top: 4px;">
+                                <span class="precio-badge">${item.precio.toLocaleString("es-AR")} / ${item.unidad}</span>
+                            </div>
+                        </td>
+                        <td style="font-weight: 600;">${item.cantidad} ${item.unidad}</td>
+                        <td style="font-weight: 600; color: var(--success-color);">${item.precio.toLocaleString("es-AR")}</td>
+                        <td style="font-weight: 700; color: var(--primary-color); font-size: 1.1rem;">${item.subtotal.toLocaleString("es-AR")}</td>
+                        <td>
+                            <button class="btn btn-danger" onclick="eliminarItem(${item.id})" title="Eliminar trabajo">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    
+                    tbody.appendChild(row);
+                });
+            }
+
+            // Actualizar total
+            document.getElementById("totalAmount").textContent = `${total.toLocaleString("es-AR")}`;
+            
+            // Actualizar resumen
+            document.getElementById("totalTrabajos").textContent = carrito.length;
+            document.getElementById("subtotalActual").textContent = `${total.toLocaleString("es-AR")}`;
+
+            // Preparar mensajes para WhatsApp y descarga
+            if (carrito.length > 0) {
+                prepararMensajes(total);
+            }
+        }
+
+        function prepararMensajes(total) {
+            let mensajeWhatsapp = `🏗️ *PRESUPUESTO SOLICITADO*\n`;
+            mensajeWhatsapp += `📅 Fecha: ${new Date().toLocaleDateString('es-AR')}\n\n`;
+            mensajeWhatsapp += `📋 *DETALLE DE TRABAJOS:*\n`;
+            
+            carrito.forEach((item, index) => {
+                mensajeWhatsapp += `${index + 1}. ${item.trabajo}\n`;
+                mensajeWhatsapp += `   • Cantidad: ${item.cantidad} ${item.unidad}\n`;
+                mensajeWhatsapp += `   • Precio unitario: ${item.precio.toLocaleString("es-AR")}\n`;
+                mensajeWhatsapp += `   • Subtotal: ${item.subtotal.toLocaleString("es-AR")}\n\n`;
+            });
+
+            mensajeWhatsapp += `💰 *TOTAL ESTIMADO: ${total.toLocaleString("es-AR")}*\n\n`;
+            mensajeWhatsapp += `📞 *¿Podemos coordinar una visita para ajustar el presupuesto?*\n`;
+            mensajeWhatsapp += `🏢 Illescas Construcciones - Olavarría`;
+
+            const btnWhatsapp = document.getElementById("btnWhatsapp");
+            btnWhatsapp.href = `https://wa.me/542284586475?text=${encodeURIComponent(mensajeWhatsapp)}`;
+        }
+
+        function descargarPresupuesto() {
+            if (carrito.length === 0) {
+                mostrarMensaje("No hay trabajos en el presupuesto para descargar", "error");
+                return;
+            }
+
+            let total = 0;
+            let contenido = `================================\n`;
+            contenido += `    PRESUPUESTO DE CONSTRUCCIÓN\n`;
+            contenido += `    ILLESCAS CONSTRUCCIONES\n`;
+            contenido += `================================\n\n`;
+            contenido += `📅 Fecha: ${new Date().toLocaleDateString('es-AR')}\n`;
+            contenido += `📍 Localidad: Olavarría, Buenos Aires\n\n`;
+            contenido += `DETALLE DE TRABAJOS:\n`;
+            contenido += `${"=".repeat(60)}\n`;
+
+            carrito.forEach((item, index) => {
+                total += item.subtotal;
+                contenido += `${index + 1}. ${item.trabajo}\n`;
+                contenido += `   Cantidad: ${item.cantidad} ${item.unidad}\n`;
+                contenido += `   Precio unitario: ${item.precio.toLocaleString("es-AR")}\n`;
+                contenido += `   Subtotal: ${item.subtotal.toLocaleString("es-AR")}\n`;
+                contenido += `   ${"-".repeat(40)}\n`;
+            });
+
+            contenido += `\n${"=".repeat(60)}\n`;
+            contenido += `TOTAL ESTIMADO: ${total.toLocaleString("es-AR")}\n`;
+            contenido += `${"=".repeat(60)}\n\n`;
+            contenido += `INFORMACIÓN DE CONTACTO:\n`;
+            contenido += `${"=".repeat(30)}\n`;
+            contenido += `🏢 Empresa: Illescas Construcciones\n`;
+            contenido += `📱 Celular: +54 2284 58-6475\n`;
+            contenido += `📞 Teléfono: 410995\n`;
+            contenido += `📍 Localidad: Olavarría, Buenos Aires\n`;
+            contenido += `📧 Email: info@illescasconstrucciones.com\n\n`;
+            contenido += `⏰ HORARIOS DE ATENCIÓN:\n`;
+            contenido += `   Lunes a Viernes: 8:00 - 18:00\n`;
+            contenido += `   Sábados: 8:00 - 13:00\n\n`;
+            contenido += `📋 NOTA IMPORTANTE:\n`;
+            contenido += `Los precios son aproximados y pueden variar según\n`;
+            contenido += `las características específicas del proyecto.\n`;
+            contenido += `Para un presupuesto final, es necesaria una\n`;
+            contenido += `evaluación presencial del trabajo.\n\n`;
+            contenido += `¡Gracias por confiar en nosotros!\n`;
+            contenido += `================================`;
+
+            const blob = new Blob([contenido], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            const fecha = new Date().toISOString().split('T')[0];
+            
+            a.href = url;
+            a.download = `presupuesto_illescas_${fecha}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            mostrarMensaje("Presupuesto descargado correctamente", "success");
+        }
+
+        function mostrarMensaje(mensaje, tipo) {
+            // Crear elemento de notificación
+            const notification = document.createElement('div');
+            notification.className = `notification ${tipo}`;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 16px 24px;
+                border-radius: var(--border-radius);
+                color: white;
+                font-weight: 600;
+                z-index: 10000;
+                animation: slideInRight 0.3s ease-out;
+                max-width: 400px;
+                box-shadow: var(--shadow-lg);
+            `;
+
+            // Colores según el tipo
+            switch(tipo) {
+                case 'success':
+                    notification.style.background = 'var(--success-color)';
+                    break;
+                case 'error':
+                    notification.style.background = 'var(--accent-color)';
+                    break;
+                case 'info':
+                    notification.style.background = 'var(--secondary-color)';
+                    break;
+                default:
+                    notification.style.background = 'var(--gray-600)';
+            }
+
+            notification.textContent = mensaje;
+            document.body.appendChild(notification);
+
+            // Remover después de 3 segundos
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease-in';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Event Listeners
+        document.getElementById('cantidad').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                agregarAlCarrito();
+            }
+        });
+
+        document.getElementById('trabajo').addEventListener('change', function() {
+            document.getElementById('cantidad').focus();
+        });
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            actualizarCarrito();
+            document.getElementById('cantidad').focus();
+        });
+
+        // Agregar estilos CSS para las animaciones de notificación
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            
+            @keyframes slideOutRight {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
