@@ -165,6 +165,28 @@
             cursor: pointer;
         }
 
+        /* Mejorar estilos de optgroup */
+        optgroup {
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--primary-color);
+            background: var(--gray-100);
+            padding: 8px 12px;
+            margin: 4px 0;
+            border-radius: 6px;
+        }
+
+        option {
+            padding: 8px 16px;
+            font-weight: 500;
+            color: var(--gray-800);
+        }
+
+        option:hover {
+            background: var(--secondary-color);
+            color: var(--white);
+        }
+
         .btn {
             display: inline-flex;
             align-items: center;
@@ -480,35 +502,39 @@
                     <div class="form-group">
                         <label for="trabajo" class="form-label">Tipo de trabajo</label>
                         <select id="trabajo" class="form-control">
-                            <option value="zapata">Zapatas 1x1 (2 pisos) - $120.000 c/u</option>
-                            <option value="encadenado">Encadenado lineal - $25.000 ml</option>
-                            <option value="columnas">Columnas metro lineal - $25.000 ml</option>
-                            <option value="vigas_sup_armada">Vigas sup. armada lineal - $25.000 ml</option>
-                            <option value="losa_viguetas">Losa viguetas - $50.000 m²</option>
-                            <option value="losa_hormigon">Losa hormigón - $80.000 m²</option>
-                            <option value="capa_aisladora">Capa aisladora - $20.000 ml</option>
-                            <option value="techo_chapa">Techo chapa c/ machimbre - $50.000 m²</option>
-                            <option value="pared_comun">Pared ladrillo común - $25.000 m²</option>
-                            <option value="pared_hueco_12">Ladrillo del 12 - $20.000 m²</option>
-                            <option value="pared_hueco_8">Ladrillo del 8 - $12.000 m²</option>
-                            <option value="revoque_fino">Revoque fino - $15.000 m²</option>
-                            <option value="revoque_grueso">Revoque grueso - $18.000 m²</option>
-                            <option value="revoque_interior">Revoque interior - $20.000 m²</option>
-                            <option value="revoque_ext">Revoque ext. (serecita + grueso) - $30.000 m²</option>
-                            <option value="pintura_latex">Pintura látex - $10.000 m²</option>
-                            <option value="pintura_sintetico">Pintura esmalte sintético - $12.000 m²</option>
-                            <option value="enduido">Enduido por mano - $8.000 m²</option>
-                            <option value="piso_ceramico">Colocación piso cerámico - $20.000 m²</option>
-                            <option value="piso_pvc">Colocación piso PVC - $15.000 m²</option>
-                            <option value="revestimiento_plastico">Revestimiento plástico - $18.000 m²</option>
-                            <option value="cielorraso_yeso">Cielorraso de yeso - $22.000 m²</option>
-                            <option value="cielorraso_pvc">Cielorraso de PVC - $16.000 m²</option>
-                            <option value="colocacion_puerta">Colocación Puerta desde - $120.000 c/u</option>
-                            <option value="puerta_placa">Puerta de placa - $75.000 c/u</option>
-                            <option value="ventana_desde">Ventanas desde - $60.000 c/u</option>
-                            <option value="ventana_grande">Ventanas 1.80x2.00 - $150.000 c/u</option>
-                            <option value="membrana_rollo">Membrana por rollo - $40.000 c/u</option>
-                            <option value="membrana_liquida">Membrana líquida.o pasta - $12.000 m²</option>
+                            <option value="" disabled selected>-- Selecciona un trabajo --</option>
+                            
+                            <optgroup label="🏗️ ESTRUCTURA Y FUNDACIONES">
+                                <option value="zapata">Zapata c/u - $100.000</option>
+                                <option value="encadenado">Encadenado ml - $35.000</option>
+                                <option value="columna">Columna ml - $40.000</option>
+                                <option value="carpeta">Carpeta m² - $15.000</option>
+                                <option value="vigueta_aerea">Vigueta aérea ml - $30.000</option>
+                            </optgroup>
+
+                            <optgroup label="🧱 ALBAÑILERÍA">
+                                <option value="contrapiso">Contrapiso m² - $25.000</option>
+                                <option value="puerta_ventana">Puerta y ventana - $70.000</option>
+                                <option value="membrana_liquida">Membrana líquida m² - $25.000</option>
+                                <option value="reboque">Reboque m² - $20.000</option>
+                                <option value="ladrillo_comun">Ladrillo común m² - $17.000</option>
+                                <option value="ladrillo_del_8">Ladrillo del 8 m² - $20.000</option>
+                                <option value="ladrillo_del_12">Ladrillo del 12 m² - $20.000</option>
+                                <option value="bloques">Bloques m² - $35.000</option>
+                                <option value="loza_viguetas">Losa con viguetas m² - $65.000</option>
+                                <option value="machimbre">Machimbre m² - $40.000</option>
+                            </optgroup>
+
+                            <optgroup label="🏠 TECHOS Y CUBIERTAS">
+                                <option value="techo_chapa">Techo de chapa m² - $45.000</option>
+                            </optgroup>
+
+                            <optgroup label="🎨 REVESTIMIENTOS Y ACABADOS">
+                                <option value="ceresita">Ceresita m² - $17.000</option>
+                                <option value="porcelanato">Porcelanato m² - $45.000</option>
+                                <option value="ceramica">Cerámica m² - $30.000</option>
+                                <option value="zocalos">Zócalos m² - $20.000</option>
+                            </optgroup>
                         </select>
                     </div>
 
@@ -616,35 +642,33 @@
 
     <script>
         const precios = {
-            zapata: { desc: "Zapatas 1x1 (2 pisos)", precio: 120000, unidad: "c/u" },
-            encadenado: { desc: "Encadenado lineal", precio: 25000, unidad: "ml" },
-            columnas: { desc: "Columnas metro lineal", precio: 25000, unidad: "ml" },
-            vigas_sup_armada: { desc: "Vigas sup. armada lineal", precio: 25000, unidad: "ml" },
-            losa_viguetas: { desc: "Losa viguetas", precio: 50000, unidad: "m²" },
-            losa_hormigon: { desc: "Losa hormigón", precio: 80000, unidad: "m²" },
-            capa_aisladora: { desc: "Capa aisladora", precio: 20000, unidad: "ml" },
-            techo_chapa: { desc: "Techo chapa c/ machimbre", precio: 50000, unidad: "m²" },
-            pared_comun: { desc: "Pared ladrillo común", precio: 25000, unidad: "m²" },
-            pared_hueco_12: { desc: "Ladrillo del 12", precio: 20000, unidad: "m²" },
-            pared_hueco_8: { desc: "Ladrillo del 8", precio: 12000, unidad: "m²" },
-            revoque_fino: { desc: "Revoque fino", precio: 15000, unidad: "m²" },
-            revoque_grueso: { desc: "Revoque grueso", precio: 18000, unidad: "m²" },
-            revoque_interior: { desc: "Revoque interior", precio: 20000, unidad: "m²" },
-            revoque_ext: { desc: "Revoque ext. (serecita + grueso)", precio: 30000, unidad: "m²" },
-            pintura_latex: { desc: "Pintura látex", precio: 10000, unidad: "m²" },
-            pintura_sintetico: { desc: "Pintura esmalte sintético", precio: 12000, unidad: "m²" },
-            enduido: { desc: "Enduido por mano", precio: 8000, unidad: "m²" },
-            piso_ceramico: { desc: "Colocación piso cerámico", precio: 20000, unidad: "m²" },
-            piso_pvc: { desc: "Colocación piso PVC", precio: 15000, unidad: "m²" },
-            revestimiento_plastico: { desc: "Revestimiento plástico", precio: 18000, unidad: "m²" },
-            cielorraso_yeso: { desc: "Cielorraso de yeso", precio: 22000, unidad: "m²" },
-            cielorraso_pvc: { desc: "Cielorraso de PVC", precio: 16000, unidad: "m²" },
-            colocacion_puerta: { desc: "Colocación Puerta desde", precio: 120000, unidad: "c/u" },
-            puerta_placa: { desc: "Puerta de placa", precio: 75000, unidad: "c/u" },
-            ventana_desde: { desc: "Ventanas desde", precio: 60000, unidad: "c/u" },
-            ventana_grande: { desc: "Ventanas 1.80x2.00", precio: 150000, unidad: "c/u" },
-            membrana_rollo: { desc: "Membrana por rollo", precio: 40000, unidad: "c/u" },
-            membrana_liquida: { desc: "Membrana líquida.o pasta", precio: 12000, unidad: "m²" },
+            // ESTRUCTURA Y FUNDACIONES
+            zapata: { desc: "Zapata c/u", precio: 100000, unidad: "c/u" },
+            encadenado: { desc: "Encadenado ml", precio: 35000, unidad: "ml" },
+            columna: { desc: "Columna ml", precio: 40000, unidad: "ml" },
+            carpeta: { desc: "Carpeta m²", precio: 15000, unidad: "m²" },
+            vigueta_aerea: { desc: "Vigueta aérea ml", precio: 30000, unidad: "ml" },
+
+            // ALBAÑILERÍA
+            contrapiso: { desc: "Contrapiso m²", precio: 25000, unidad: "m²" },
+            puerta_ventana: { desc: "Puerta y ventana", precio: 70000, unidad: "c/u" },
+            membrana_liquida: { desc: "Membrana líquida m²", precio: 25000, unidad: "m²" },
+            reboque: { desc: "Reboque m²", precio: 20000, unidad: "m²" },
+            ladrillo_comun: { desc: "Ladrillo común m²", precio: 17000, unidad: "m²" },
+            ladrillo_del_8: { desc: "Ladrillo del 8 m²", precio: 20000, unidad: "m²" },
+            ladrillo_del_12: { desc: "Ladrillo del 12 m²", precio: 20000, unidad: "m²" },
+            bloques: { desc: "Bloques m²", precio: 35000, unidad: "m²" },
+            loza_viguetas: { desc: "Losa con viguetas m²", precio: 65000, unidad: "m²" },
+            machimbre: { desc: "Machimbre m²", precio: 40000, unidad: "m²" },
+
+            // TECHOS Y CUBIERTAS
+            techo_chapa: { desc: "Techo de chapa m²", precio: 45000, unidad: "m²" },
+
+            // REVESTIMIENTOS Y ACABADOS
+            ceresita: { desc: "Ceresita m²", precio: 17000, unidad: "m²" },
+            porcelanato: { desc: "Porcelanato m²", precio: 45000, unidad: "m²" },
+            ceramica: { desc: "Cerámica m²", precio: 30000, unidad: "m²" },
+            zocalos: { desc: "Zócalos m²", precio: 20000, unidad: "m²" }
         };
 
         let carrito = [];
@@ -653,6 +677,12 @@
             const trabajo = document.getElementById("trabajo").value;
             const cantidadInput = document.getElementById("cantidad");
             const cantidad = parseFloat(cantidadInput.value);
+
+            if (!trabajo || trabajo === "") {
+                mostrarMensaje("Por favor, selecciona un tipo de trabajo", "error");
+                document.getElementById("trabajo").focus();
+                return;
+            }
 
             if (isNaN(cantidad) || cantidad <= 0) {
                 mostrarMensaje("Por favor, ingrese una cantidad válida mayor a 0", "error");
@@ -786,6 +816,7 @@
             });
 
             mensajeWhatsapp += `💰 *TOTAL ESTIMADO: ${total.toLocaleString("es-AR")}*\n\n`;
+            mensajeWhatsapp += `📅 *PRECIOS ACTUALIZADOS - Vigencia a partir de Agosto 2025*\n\n`;
             mensajeWhatsapp += `📞 *¿Podemos coordinar una visita para ajustar el presupuesto?*\n`;
             mensajeWhatsapp += `🏢 Illescas Construcciones - Olavarría`;
 
