@@ -490,7 +490,6 @@
     <main>
         <div class="container">
             <div class="calculadora-grid">
-                <!-- CALCULADORA -->
                 <div class="card">
                     <h2>
                         <div class="card-icon">
@@ -534,6 +533,8 @@
                                 <option value="porcelanato">Porcelanato m² - $45.000</option>
                                 <option value="ceramica">Cerámica m² - $30.000</option>
                                 <option value="zocalos">Zócalos m² - $20.000</option>
+                                <option value="pintura_latex">Pintura latex m² - $10.000</option>
+                                <option value="enduido_a_mano">Enduido por mano m² - $8.000</option>
                             </optgroup>
                         </select>
                     </div>
@@ -549,7 +550,6 @@
                     </button>
                 </div>
 
-                <!-- RESUMEN RÁPIDO -->
                 <div class="card">
                     <h2>
                         <div class="card-icon">
@@ -581,7 +581,6 @@
                 </div>
             </div>
 
-            <!-- PRESUPUESTO DETALLADO -->
             <div class="card presupuesto-card">
                 <h2>
                     <div class="card-icon">
@@ -668,7 +667,9 @@
             ceresita: { desc: "Ceresita m²", precio: 17000, unidad: "m²" },
             porcelanato: { desc: "Porcelanato m²", precio: 45000, unidad: "m²" },
             ceramica: { desc: "Cerámica m²", precio: 30000, unidad: "m²" },
-            zocalos: { desc: "Zócalos m²", precio: 20000, unidad: "m²" }
+            zocalos: { desc: "Zócalos m²", precio: 20000, unidad: "m²" },
+            pintura_latex: { desc: "Pintura latex m²", precio: 10000, unidad: "m²" },
+            enduido_a_mano: { desc: "Enduido por mano m²", precio: 8000, unidad: "m²" }
         };
 
         let carrito = [];
@@ -810,12 +811,12 @@
             
             carrito.forEach((item, index) => {
                 mensajeWhatsapp += `${index + 1}. ${item.trabajo}\n`;
-                mensajeWhatsapp += `   • Cantidad: ${item.cantidad} ${item.unidad}\n`;
-                mensajeWhatsapp += `   • Precio unitario: ${item.precio.toLocaleString("es-AR")}\n`;
-                mensajeWhatsapp += `   • Subtotal: ${item.subtotal.toLocaleString("es-AR")}\n\n`;
+                mensajeWhatsapp += `   • Cantidad: ${item.cantidad.toFixed(2).replace(/\.0+$/, '')} ${item.unidad}\n`;
+                mensajeWhatsapp += `   • Precio unitario: $${item.precio.toLocaleString("es-AR")}\n`;
+                mensajeWhatsapp += `   • Subtotal: $${item.subtotal.toLocaleString("es-AR")}\n\n`;
             });
 
-            mensajeWhatsapp += `💰 *TOTAL ESTIMADO: ${total.toLocaleString("es-AR")}*\n\n`;
+            mensajeWhatsapp += `💰 *TOTAL ESTIMADO: $${total.toLocaleString("es-AR")}*\n\n`;
             mensajeWhatsapp += `📅 *PRECIOS ACTUALIZADOS - Vigencia a partir de Agosto 2025*\n\n`;
             mensajeWhatsapp += `📞 *¿Podemos coordinar una visita para ajustar el presupuesto?*\n`;
             mensajeWhatsapp += `🏢 Illescas Construcciones - Olavarría`;
@@ -964,11 +965,9 @@
             @keyframes slideOutRight {
                 from {
                     transform: translateX(0);
-                    opacity: 1;
                 }
                 to {
                     transform: translateX(100%);
-                    opacity: 0;
                 }
             }
         `;
