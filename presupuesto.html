@@ -809,12 +809,14 @@
             mensajeWhatsapp += `📅 Fecha: ${new Date().toLocaleDateString('es-AR')}\n\n`;
             mensajeWhatsapp += `📋 *DETALLE DE TRABAJOS:*\n`;
             
-            carrito.forEach((item, index) => {
-                mensajeWhatsapp += `${index + 1}. ${item.trabajo}\n`;
+            // Usamos un bucle for tradicional para mayor compatibilidad
+            for (let i = 0; i < carrito.length; i++) {
+                const item = carrito[i];
+                mensajeWhatsapp += `${i + 1}. ${item.trabajo}\n`;
                 mensajeWhatsapp += `   • Cantidad: ${item.cantidad.toFixed(2).replace(/\.0+$/, '')} ${item.unidad}\n`;
                 mensajeWhatsapp += `   • Precio unitario: $${item.precio.toLocaleString("es-AR")}\n`;
                 mensajeWhatsapp += `   • Subtotal: $${item.subtotal.toLocaleString("es-AR")}\n\n`;
-            });
+            }
 
             mensajeWhatsapp += `💰 *TOTAL ESTIMADO: $${total.toLocaleString("es-AR")}*\n\n`;
             mensajeWhatsapp += `📅 *PRECIOS ACTUALIZADOS - Vigencia a partir de Agosto 2025*\n\n`;
